@@ -77,6 +77,9 @@ class RMSXRouteFillTest:
         log("EasyMSX notification received...")
         if notification.category == EasyMSXNotification.NotificationCategory.ROUTE:
             log("Notification is at ROUTE level")
+            log("\tNotification: ")
+            for fc in notification.field_changes:
+                log("\t\tField: " + fc.field.name() + "\told: " + fc.old_value + "\tnew: " + fc.new_value)
             if notification.type == EasyMSXNotification.NotificationType.NEW or notification.type == EasyMSXNotification.NotificationType.INITIALPAINT: 
                 log("Notification is NEW or INITIAL_PAINT")
                 if notification.source.field("EMSX_STATUS").value() == "FILLED" or notification.source.field("EMSX_STATUS").value() == "CANCEL":
@@ -209,10 +212,10 @@ class RMSXRouteFillTest:
             
             last_fill_shown = dataset.datapoints["LastFillShown"].get_value()
             
-            log("RouteFillOccurred DataSet values : current_filled=" + str(current_filled) + "|previous_filled=" + str(previous_filled) + "|current_last_shares=" + str(current_last_shares) + "|previous_last_shares=" + str(previous_last_shares) + "|current_status=" + current_status + "|previous_status=" + previous_status)
+            log("RouteFillOccurred DataSet values : current_filled=" + str(current_filled) + "|previous_filled=" + str(previous_filled) + "|current_last_shares=" + str(current_last_shares) + "|previous_last_shares=" + str(previous_last_shares) + "|current_status=" + current_status + "|previous_status=" + previous_status + "|last_fill_shown=" + str(last_fill_shown))
                 
-            #res = (current_filled != previous_filled and previous_status != None and current_filled != last_fill_shown)
-            res = (current_filled != previous_filled and current_filled != last_fill_shown)
+            res = (current_filled != previous_filled and previous_status != "" and current_filled != last_fill_shown)
+            #res = (current_filled != previous_filled and current_filled != last_fill_shown)
             
             log("RouteFillOccurred returning value: " + str(res))
             
